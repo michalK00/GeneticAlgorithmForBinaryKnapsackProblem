@@ -53,10 +53,10 @@ int main() {
 	{
 		std::cout << e.what() << "\n";
 	}
-	catch (const IllegalParameterValueException& e) {
+	catch (const IllegalItemNumberException& e) {
 		std::cout << e.what() << "\n";
 	}
-	catch (const IllegalItemNumberException& e) {
+	catch (const IllegalParameterValueException& e) {
 		std::cout << e.what() << "\n";
 	}
 	catch (...)

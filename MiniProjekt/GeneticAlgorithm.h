@@ -20,7 +20,8 @@ public:
 	const Mutation& getMutation() const;
 	const Cross& getCross() const;
 private:
-	void checkIfNewPopulationGotBetterIfNotAddOldBestAndBoostMutProbIfYesUpdateBestSolution();
+	void boostMutProb();
+	void swapOldBestWithWorstFromNewPopulation(double bestFitnessFromCurrentPopulation);
 	void validateInputParameters(int populationSize, double mutationProbability, double crossProbability) const;
 	void validatePopulation(Population& population, KnapsackProblem& problem);
 

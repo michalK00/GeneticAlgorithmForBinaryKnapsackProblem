@@ -72,10 +72,10 @@ void KnapsackProblem::loadProblemFromFile(const std::string& itemsFilePath) {
 
 void KnapsackProblem::validatePassedParameters(const double knapsackSize, const std::vector<std::pair<double, double> >& items) {
 	if (knapsackSize <= 0 ) {
-		throw IllegalKnapsackSizeException(knapsackSize);
+		throw IllegalSizeException(knapsackSize, KNAPSACK_SIZE_INFO);
 	}
 	if (items.size() == 0) {
-		throw IllegalVectorSizeException();
+		throw IllegalSizeException(items.size(), ITEM_SIZE_INFO);
 	}
 	for (int i = 0; i < items.size(); i++) {
 		if (items[i].first <= 0) {

@@ -27,7 +27,7 @@ GeneticAlgorithm::GeneticAlgorithm(Population& population, KnapsackProblem& prob
 void GeneticAlgorithm::validateInputParameters(int populationSize, double mutationProbability, double crossProbability) const{
 
 	if (populationSize <= 0) {
-		throw IllegalPopulationSizeException(populationSize);
+		throw IllegalSizeException(populationSize, POP_SIZE_INFO);
 	}
 	if (mutationProbability > 1 || mutationProbability < 0) {
 		throw IllegalProbabilityException(mutationProbability);
@@ -51,7 +51,16 @@ void GeneticAlgorithm::runAlgorithm(KnapsackProblem& problem) {
 	
 	for (int iteration = 0; iteration < NUMBER_OF_ITERATIONS; iteration++) {
 		population.rateAllIndividuals(problem);
-		checkIfNewPopulationGotBetterIfNotAddOldBestAndBoostMutProbIfYesUpdateBestSolution();
+
+		std::pair<std::vector<bool>, double> bestSolutionFromCurrentPopulation(std::move(population.findBestSolution()));
+		if (bestSolutionFromCurrentPopulation.second < lastBestSolution.second) {
+			double bestFitnessFromCurrentPopulation = population.findWorstIndividualIndex(bestSolutionFromCurrentPopulation.second);
+			swapOldBestWithWorstFromNewPopulation(bestFitnessFromCurrentPopulation);
+			boostMutProb();
+		}
+		else {
+			lastBestSolution = std::move(bestSolutionFromCurrentPopulation);
+		}
 		population = std::move(population.executeCrossing(cross));
 		population.executeMutating(mutation);
 		//nie wiem czy odwolywac sie do tego przez populacje czy przez mutation
@@ -64,15 +73,13 @@ std::pair<std::vector<bool>, double> GeneticAlgorithm::getSolution()
 {
 	return lastBestSolution;
 }
-void GeneticAlgorithm::checkIfNewPopulationGotBetterIfNotAddOldBestAndBoostMutProbIfYesUpdateBestSolution() {
-	std::pair<std::vector<bool>, double> bestSolutionFromCurrentPopulation(std::move(population.findBestSolution()));
-	if (bestSolutionFromCurrentPopulation.second < lastBestSolution.second) {
-		population.injectGenotypeAndFitnessToIndividualAt(population.findWorstIndividualIndex(bestSolutionFromCurrentPopulation.second), lastBestSolution);
-		mutation.setMutationProbability(std::min(1.0, mutationProbability + mutationProbability * MUTATION_BOOSTER));
-	}
-	else {
-		lastBestSolution = std::move(bestSolutionFromCurrentPopulation);
-	}
+void GeneticAlgorithm::boostMutProb()
+{
+	mutation.setMutationProbability(std::min(1.0, mutationProbability + mutationProbability * MUTATION_BOOSTER));
+}
+void GeneticAlgorithm::swapOldBestWithWorstFromNewPopulation(double bestFitnessFromCurrentPopulation)
+{
+	population.injectGenotypeAndFitnessToIndividualAt(bestFitnessFromCurrentPopulation, lastBestSolution);
 }
 
 
