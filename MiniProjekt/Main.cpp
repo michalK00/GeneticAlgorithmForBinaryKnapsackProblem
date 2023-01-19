@@ -8,7 +8,7 @@
 void printSolution(const std::pair<std::vector<bool>, double>& solution);
 int main() {
 	//pozniej przeniesc do .h
-	const unsigned int populationSize = 45;
+	const int populationSize = 45;
 	const double mutationProb = 0.15;
 	const double crossProb = 0.6;
 	const double knapsackSize = 269;
@@ -25,12 +25,18 @@ int main() {
 	items.push_back(std::make_pair(87, 46));
 	try
 	{
+		//Population population(10, 5);
+
 		KnapsackProblem problem("test2.txt");
+
 		//KnapsackProblem problem(knapsackSize, items);
+
 		GeneticAlgorithm algorithm(populationSize, problem, mutationProb, crossProb);
 
+		//GeneticAlgorithm algorithm(population, problem, mutationProb, crossProb);
+
 		algorithm.runAlgorithm(problem);
-		
+
 		//dodac klase runner albo metode printSolution
 		std::pair<std::vector<bool>, double> solution = algorithm.getSolution();
 		printSolution(solution);
@@ -47,20 +53,10 @@ int main() {
 	{
 		std::cout << e.what() << "\n";
 	}
-	catch (const IllegalItemParametersException& e)
-	{
+	catch (const IllegalParameterValueException& e) {
 		std::cout << e.what() << "\n";
 	}
-	catch (const IllegalKnapsackSizeException& e)
-	{
-		std::cout << e.what() << "\n";
-	}
-	catch (const IllegalVectorSizeException& e)
-	{
-		std::cout << e.what() << "\n";
-	}
-	catch (const IllegalProbabilityException& e)
-	{
+	catch (const IllegalItemNumberException& e) {
 		std::cout << e.what() << "\n";
 	}
 	catch (...)

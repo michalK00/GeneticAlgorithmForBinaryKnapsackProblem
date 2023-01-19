@@ -7,7 +7,7 @@
 
 class GeneticAlgorithm {
 public:
-	GeneticAlgorithm(unsigned int populationSize, KnapsackProblem& problem, double mutationProbability, double crossProbability);
+	GeneticAlgorithm(int populationSize, KnapsackProblem& problem, double mutationProbability, double crossProbability);
 	GeneticAlgorithm(Population& population, KnapsackProblem& problem, double mutationProbability, double crossProbability);
 	
 
@@ -19,24 +19,21 @@ public:
 	double getCrossProbability() const;
 	const Mutation& getMutation() const;
 	const Cross& getCross() const;
-	unsigned int getPopulationSize() const;
 private:
-	Individual findBestResultFromCurrentPopulation() const;
-	void validateInputParameters(double mutationProbability, double crossProbability) const;
-	void setLastBestIndividualToTheOneFromCurrentPopulation();
+	void checkIfNewPopulationGotBetterIfNotAddOldBestAndBoostMutProbIfYesUpdateBestSolution();
+	void validateInputParameters(int populationSize, double mutationProbability, double crossProbability) const;
+	void validatePopulation(Population& population, KnapsackProblem& problem);
 
 	static const int NUMBER_OF_ITERATIONS = 1000;
 	//nie wiem czemu nie ale double nie moze zostac zainicjalizowany w obrebie klasy bez constexpr
 	static constexpr double MUTATION_BOOSTER = 0.1;
 	double mutationProbability;
 	double crossProbability;
-	unsigned int populationSize;
 
 	Population population;
-	Individual lastBestIndividual;
+	std::pair<std::vector<bool>, double> lastBestSolution;
 
 	KnapsackProblem problem;
-
 	Mutation mutation;
 	Cross cross;
 };

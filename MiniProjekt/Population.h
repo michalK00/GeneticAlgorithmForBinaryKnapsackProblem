@@ -14,12 +14,13 @@ public:
 	Population executeCrossing(Cross& cross);
 	void executeMutating(Mutation& mutate);
 	
-	const std::vector<Individual>& getPopulation() const;
+	const unsigned int getPopulationSize() const;
+	const unsigned int getNumberOfItemsFromIndividualAt(unsigned int index) const;
 
-	unsigned int findWorstIndividualIndex() const;
-	unsigned int findBestIndividualIndex() const;
+	unsigned int findWorstIndividualIndex(double bestFitness) const;
+	std::pair<std::vector<bool>, double> findBestSolution() const;
 
-	void swapIndividualAtIndex(const int index, const Individual& individualToInsert);
+	void injectGenotypeAndFitnessToIndividualAt(const int index, const std::pair<std::vector<bool>, double>& solutionToInject);
 private:
 	void generatePopulation(unsigned int numberOfItems);
 	std::pair<Individual, Individual> findParentsForCrossing();

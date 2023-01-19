@@ -11,6 +11,7 @@ public:
 	Individual();
 	Individual(int numberOfItems);
 	Individual(const std::vector<bool>& genotype);
+	Individual(const std::vector<bool>& genotype, double fitness);
 
 	double calculateFitness(const KnapsackProblem& problem);
 	void mutate(Mutation& mutation);

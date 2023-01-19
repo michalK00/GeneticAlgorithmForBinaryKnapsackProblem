@@ -9,10 +9,7 @@ Population::Population(unsigned int passedPopulationSize, unsigned int numberOfI
 	: populationSize(passedPopulationSize),
 	gen{ std::random_device{}() }
 {
-	if (populationSize > 0) {
-		generatePopulation(numberOfItems);
-	}
-	
+	generatePopulation(numberOfItems);	
 }
 
 Population::Population(std::vector<Individual>& population)
@@ -85,38 +82,43 @@ void Population::executeMutating(Mutation& mutate)
 	}
 }
 
-const std::vector<Individual>& Population::getPopulation() const
+const unsigned int Population::getPopulationSize() const
 {
-	return population;
+	return populationSize;
 }
 
-unsigned int Population::findWorstIndividualIndex() const
+const unsigned int Population::getNumberOfItemsFromIndividualAt(unsigned int index) const
 {
-	int worstFittnes = population[findBestIndividualIndex()].getFitness();
+	return population[index].getGenotype().size();
+}
+
+unsigned int Population::findWorstIndividualIndex(double bestFitness) const
+{
+	double worstFitness = bestFitness;
 	int index = -1;
 	for (int i = 0; i < populationSize; i++) {
-		if (population[i].getFitness() < worstFittnes) {
-			worstFittnes = population[i].getFitness();
+		if (population[i].getFitness() < worstFitness) {
+			worstFitness = population[i].getFitness();
 			index = i;
 		}
 	}
 	return index;
 }
 
-unsigned int Population::findBestIndividualIndex() const
+std::pair<std::vector<bool>, double> Population::findBestSolution() const
 {
-	int bestIndex = -1;
+	double bestFitness = -1;
 	int index = -1;
 	for (int i = 0; i < populationSize; i++) {
-		if (population[i].getFitness() > bestIndex) {
-			bestIndex = population[i].getFitness();
+		if (population[i].getFitness() > bestFitness) {
+			bestFitness = population[i].getFitness();
 			index = i;
 		}
 	}
-	return index;
+	return std::make_pair(population[index].getGenotype(), bestFitness);
 }
 
-void Population::swapIndividualAtIndex(const int index, const Individual& individualToInsert)
+void Population::injectGenotypeAndFitnessToIndividualAt(const int index, const std::pair<std::vector<bool>, double>& solutionToInject)
 {
-	population[index] = individualToInsert;
+	population[index] = std::move(Individual(solutionToInject.first, solutionToInject.second));
 }

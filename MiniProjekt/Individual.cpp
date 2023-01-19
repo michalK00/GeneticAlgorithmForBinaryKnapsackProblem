@@ -26,6 +26,12 @@ Individual::Individual(const std::vector<bool>& genotype)
 	fitness = -1;
 }
 
+Individual::Individual(const std::vector<bool>& genotype, double fitness) 
+	: genotype(genotype),
+	fitness(fitness),
+	gen{ std::random_device{}() }
+{}
+
 double Individual::calculateFitness(const KnapsackProblem& problem) {
 	fitness = problem.calculateSolutionValue(genotype);
 	return fitness;

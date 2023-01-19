@@ -3,30 +3,32 @@
 
 
 
-GeneticAlgorithm::GeneticAlgorithm(unsigned int populationSize, KnapsackProblem& problem, double mutationProbability, double crossProbability)
-	: populationSize(populationSize),
-	mutationProbability(mutationProbability),
+GeneticAlgorithm::GeneticAlgorithm(int populationSize, KnapsackProblem& problem, double mutationProbability, double crossProbability)
+	: 	mutationProbability(mutationProbability),
 	crossProbability(crossProbability),
 	mutation(mutationProbability),
 	cross(crossProbability),
-	population(populationSize, problem.getItems().size()),
 	problem(problem)
 {
-	validateInputParameters(mutationProbability, crossProbability);
+	validateInputParameters(populationSize, mutationProbability, crossProbability);
+	population = Population(populationSize, problem.getItems().size());
 }
 GeneticAlgorithm::GeneticAlgorithm(Population& population, KnapsackProblem& problem, double mutationProbability, double crossProbability)
-	: populationSize(population.getPopulation().size()),
-	mutationProbability(mutationProbability),
+	: 	mutationProbability(mutationProbability),
 	crossProbability(crossProbability),
 	mutation(mutationProbability),
 	cross(crossProbability),
-	population(population),
 	problem(problem)
 {
-	validateInputParameters(mutationProbability, crossProbability);
+	validateInputParameters(population.getPopulationSize(), mutationProbability, crossProbability);
+	validatePopulation(population, problem);
+	population = Population(population);
 }
-void GeneticAlgorithm::validateInputParameters(double mutationProbability, double crossProbability) const{
+void GeneticAlgorithm::validateInputParameters(int populationSize, double mutationProbability, double crossProbability) const{
 
+	if (populationSize <= 0) {
+		throw IllegalPopulationSizeException(populationSize);
+	}
 	if (mutationProbability > 1 || mutationProbability < 0) {
 		throw IllegalProbabilityException(mutationProbability);
 	}
@@ -35,34 +37,42 @@ void GeneticAlgorithm::validateInputParameters(double mutationProbability, doubl
 	}
 
 }
+void GeneticAlgorithm::validatePopulation(Population& population, KnapsackProblem& problem)
+{
+	for (int i = 0; i < population.getPopulationSize(); i++) {
+		int actualSize = population.getNumberOfItemsFromIndividualAt(i);
+		int expectedSizeproblem = problem.getItems().size();
+		if (actualSize != expectedSizeproblem) {
+			throw IllegalItemNumberException(i + 1, expectedSizeproblem, actualSize);
+		}
+	}
+}
 void GeneticAlgorithm::runAlgorithm(KnapsackProblem& problem) {
 	
 	for (int iteration = 0; iteration < NUMBER_OF_ITERATIONS; iteration++) {
 		population.rateAllIndividuals(problem);
-
-		if (findBestResultFromCurrentPopulation().getFitness() < lastBestIndividual.getFitness()) {
-			population.swapIndividualAtIndex(population.findWorstIndividualIndex(), lastBestIndividual);
-		}
-		else {
-			setLastBestIndividualToTheOneFromCurrentPopulation();
-			mutation.setMutationProbability(std::min(1.0, mutationProbability + MUTATION_BOOSTER));			
-		}
+		checkIfNewPopulationGotBetterIfNotAddOldBestAndBoostMutProbIfYesUpdateBestSolution();
 		population = std::move(population.executeCrossing(cross));
 		population.executeMutating(mutation);
+		//nie wiem czy odwolywac sie do tego przez populacje czy przez mutation
 		mutation.setMutationProbability(mutationProbability);
 	}
 	population.rateAllIndividuals(problem);
-	setLastBestIndividualToTheOneFromCurrentPopulation();
+	lastBestSolution = std::move(population.findBestSolution());
 }
 std::pair<std::vector<bool>, double> GeneticAlgorithm::getSolution()
 {
-	return std::make_pair(lastBestIndividual.getGenotype(), lastBestIndividual.getFitness());
+	return lastBestSolution;
 }
-Individual GeneticAlgorithm::findBestResultFromCurrentPopulation() const
-{
-	int index = population.findBestIndividualIndex();
-	Individual bestResult{ (population.getPopulation())[index] };
-	return bestResult;
+void GeneticAlgorithm::checkIfNewPopulationGotBetterIfNotAddOldBestAndBoostMutProbIfYesUpdateBestSolution() {
+	std::pair<std::vector<bool>, double> bestSolutionFromCurrentPopulation(std::move(population.findBestSolution()));
+	if (bestSolutionFromCurrentPopulation.second < lastBestSolution.second) {
+		population.injectGenotypeAndFitnessToIndividualAt(population.findWorstIndividualIndex(bestSolutionFromCurrentPopulation.second), lastBestSolution);
+		mutation.setMutationProbability(std::min(1.0, mutationProbability + mutationProbability * MUTATION_BOOSTER));
+	}
+	else {
+		lastBestSolution = std::move(bestSolutionFromCurrentPopulation);
+	}
 }
 
 
@@ -73,14 +83,6 @@ double GeneticAlgorithm::getMutationProbability() const {
 double GeneticAlgorithm::getCrossProbability() const {
 	return crossProbability;
 }
-unsigned int GeneticAlgorithm::getPopulationSize() const {
-	return populationSize;
-}
-void GeneticAlgorithm::setLastBestIndividualToTheOneFromCurrentPopulation()
-{
-	lastBestIndividual = findBestResultFromCurrentPopulation();
-}
-
 const Mutation& GeneticAlgorithm::getMutation() const {
 	return mutation;
 }
