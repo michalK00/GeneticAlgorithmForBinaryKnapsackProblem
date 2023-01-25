@@ -6,7 +6,7 @@
 class KnapsackProblem {
 public:
 	KnapsackProblem(const std::string& itemsFilePath);
-	KnapsackProblem(const double knapsackSize,const std::vector<std::pair<double, double> > items);
+	KnapsackProblem(const double knapsackSize,const std::vector<std::pair<double, double> >& items);
 
 	~KnapsackProblem() = default;
 	KnapsackProblem(const KnapsackProblem& other) = default;

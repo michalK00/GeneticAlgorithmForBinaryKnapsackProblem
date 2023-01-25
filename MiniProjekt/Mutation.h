@@ -13,7 +13,6 @@ public:
 	Mutation& operator= (Mutation&& other) noexcept = default;
 
 	void mutateOverEntireGenotype(std::vector<bool>& genotype);
-	//void singleMutation(std::vector<bool> genotype) const;
 	void setMutationProbability(double mutationProbability);
 private:
 	void flipGene(int index, std::vector<bool>& genotype) const;

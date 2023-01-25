@@ -14,34 +14,6 @@ int Cross::getBreakpoint(int upperBound)  {
 	return distrib(gen);
 }
 
-
-//std::vector< std::vector<bool> > Cross::onePointCross(const std::vector<bool>& fstParentGenotype,
-//	const std::vector<bool>& sndParentGenotype) {
-//	
-//	
-//	std::vector< std::vector<bool> > crossResult;
-//	crossResult.reserve(2);
-//
-//	int breakPoint = getBreakpoint(fstParentGenotype.size() - 2);
-//		
-//	std::vector<bool> fstChildGenotype;
-//	std::vector<bool> sndChildGenotype;
-//	fstChildGenotype.reserve(fstParentGenotype.size());
-//	sndChildGenotype.reserve(sndParentGenotype.size());
-//
-//	for (int index = 0; index < breakPoint; index++) {
-//		fstChildGenotype.push_back(fstParentGenotype[index]);
-//		sndChildGenotype.push_back(sndParentGenotype[index]);
-//	}
-//	for (int index = breakPoint; index < fstParentGenotype.size(); index++) {
-//		fstChildGenotype.push_back(sndParentGenotype[index]);
-//		sndChildGenotype.push_back(fstParentGenotype[index]);
-//	}
-//	crossResult.push_back(fstChildGenotype);
-//	crossResult.push_back(sndChildGenotype);
-//
-//	return crossResult;
-//}
 std::vector<Individual> Cross::onePointCross(const Individual& fstParent, const Individual& sndParent) {
 
 	std::vector<Individual> crossResult;

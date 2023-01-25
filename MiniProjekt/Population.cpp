@@ -61,7 +61,6 @@ Population Population::executeCrossing(Cross& cross)
 		std::pair<Individual, Individual> parents(findParentsForCrossing());
 
 		std::vector<Individual> children(parents.first.cross(cross, parents.second));
-		//czy obliczac dla ostatnich dwoch dzieci fitness i wybrac lepsze?
 		if (newPopulation.populationSize == populationSize - 1) {
 			newPopulation.population.emplace_back(std::move(children[0]));
 			newPopulation.populationSize++;

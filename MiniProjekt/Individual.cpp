@@ -22,7 +22,6 @@ Individual::Individual(const std::vector<bool>& genotype)
 	: genotype(genotype), 
 	gen{std::random_device{}()} 
 {
-	//nie wiem czy to ma sens
 	fitness = -1;
 }
 

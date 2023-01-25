@@ -11,7 +11,7 @@ double KnapsackProblem::getKnapsackSize() const {
 KnapsackProblem::KnapsackProblem(const std::string& itemsFilePath) {
 	loadProblemFromFile(itemsFilePath);
 }
-KnapsackProblem::KnapsackProblem(const double knapsackSize, const std::vector<std::pair<double, double> > items) 
+KnapsackProblem::KnapsackProblem(const double knapsackSize, const std::vector<std::pair<double, double> >& items) 
 	: knapsackSize(knapsackSize), 
 	numberOfItems(items.size()), 
 	items(items) 

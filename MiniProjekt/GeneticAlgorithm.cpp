@@ -63,7 +63,7 @@ void GeneticAlgorithm::runAlgorithm() {
 		}
 		population = std::move(population.executeCrossing(cross));
 		population.executeMutating(mutation);
-		//nie wiem czy odwolywac sie do tego przez populacje czy przez mutation
+
 		mutation.setMutationProbability(mutationProbability);
 	}
 	population.rateAllIndividuals(problem);
