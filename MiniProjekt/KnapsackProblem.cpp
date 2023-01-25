@@ -49,9 +49,9 @@ void KnapsackProblem::loadProblemFromFile(const std::string& itemsFilePath) {
 		throw FileReadingException(pairNumber);
 	}
 	pairNumber++;
-	items.reserve(numberOfItems);
 	numberOfItems = redNumberOfItems;
 	knapsackSize = redKnapsackSize;
+	items.reserve(numberOfItems);
 
 	double value, weight;
 

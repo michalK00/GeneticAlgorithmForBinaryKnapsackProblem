@@ -13,16 +13,16 @@ GeneticAlgorithm::GeneticAlgorithm(int populationSize, KnapsackProblem& problem,
 	validateInputParameters(populationSize, mutationProbability, crossProbability);
 	population = Population(populationSize, problem.getItems().size());
 }
-GeneticAlgorithm::GeneticAlgorithm(Population& population, KnapsackProblem& problem, double mutationProbability, double crossProbability)
+GeneticAlgorithm::GeneticAlgorithm(Population& passedPopulation, KnapsackProblem& problem, double mutationProbability, double crossProbability)
 	: 	mutationProbability(mutationProbability),
 	crossProbability(crossProbability),
 	mutation(mutationProbability),
 	cross(crossProbability),
 	problem(problem)
 {
-	validateInputParameters(population.getPopulationSize(), mutationProbability, crossProbability);
-	validatePopulation(population, problem);
-	population = Population(population);
+	validateInputParameters(passedPopulation.getPopulationSize(), mutationProbability, crossProbability);
+	validatePopulation(passedPopulation, problem);
+	population = Population(passedPopulation);
 }
 void GeneticAlgorithm::validateInputParameters(int populationSize, double mutationProbability, double crossProbability) const{
 
@@ -47,7 +47,7 @@ void GeneticAlgorithm::validatePopulation(Population& population, KnapsackProble
 		}
 	}
 }
-void GeneticAlgorithm::runAlgorithm(KnapsackProblem& problem) {
+void GeneticAlgorithm::runAlgorithm() {
 	
 	for (int iteration = 0; iteration < NUMBER_OF_ITERATIONS; iteration++) {
 		population.rateAllIndividuals(problem);

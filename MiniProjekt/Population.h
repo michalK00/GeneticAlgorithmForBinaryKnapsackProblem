@@ -9,6 +9,11 @@ public:
 	Population(unsigned int passedPopulationSize, unsigned int numberOfItems);
 	Population(std::vector<Individual>& population);
 
+	~Population() = default;
+	Population(const Population& other) = default;
+	Population(Population&& other) = default;
+	Population& operator= (const Population& other) = default;
+	Population& operator= (Population&& other) noexcept = default;
 	
 	void rateAllIndividuals(const KnapsackProblem& knapsackProblem);
 	Population executeCrossing(Cross& cross);

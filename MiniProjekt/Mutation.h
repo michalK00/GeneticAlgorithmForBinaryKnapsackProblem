@@ -6,6 +6,12 @@ class Mutation {
 public:
 	Mutation(double mutationProb);
 
+	~Mutation() = default;
+	Mutation(const Mutation& other) = default;
+	Mutation(Mutation&& other) = default;
+	Mutation& operator= (const Mutation& other) = default;
+	Mutation& operator= (Mutation&& other) noexcept = default;
+
 	void mutateOverEntireGenotype(std::vector<bool>& genotype);
 	//void singleMutation(std::vector<bool> genotype) const;
 	void setMutationProbability(double mutationProbability);

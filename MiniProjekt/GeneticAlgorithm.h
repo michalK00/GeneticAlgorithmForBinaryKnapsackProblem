@@ -10,9 +10,13 @@ public:
 	GeneticAlgorithm(int populationSize, KnapsackProblem& problem, double mutationProbability, double crossProbability);
 	GeneticAlgorithm(Population& population, KnapsackProblem& problem, double mutationProbability, double crossProbability);
 	
+	~GeneticAlgorithm() = default;
+	GeneticAlgorithm(const GeneticAlgorithm& other) = default;
+	GeneticAlgorithm(GeneticAlgorithm&& other) = default;
+	GeneticAlgorithm& operator= (const GeneticAlgorithm& other) = default;
+	GeneticAlgorithm& operator= (GeneticAlgorithm&& other) noexcept = default;
 
-
-	void runAlgorithm(KnapsackProblem& problem);
+	void runAlgorithm();
 	std::pair<std::vector<bool>, double> getSolution();
 
 	double getMutationProbability() const;
@@ -25,7 +29,7 @@ private:
 	void validateInputParameters(int populationSize, double mutationProbability, double crossProbability) const;
 	void validatePopulation(Population& population, KnapsackProblem& problem);
 
-	static const int NUMBER_OF_ITERATIONS = 1000;
+	static const int NUMBER_OF_ITERATIONS = 10000;
 	//nie wiem czemu nie ale double nie moze zostac zainicjalizowany w obrebie klasy bez constexpr
 	static constexpr double MUTATION_BOOSTER = 0.1;
 	double mutationProbability;
