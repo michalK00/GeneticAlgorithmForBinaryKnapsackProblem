@@ -15,12 +15,12 @@ public:
 	KnapsackProblem& operator= (KnapsackProblem&& other) noexcept = default;
 
 	double calculateSolutionValue(const std::vector<bool>& genotype) const;
-	void loadProblemFromFile(const std::string& itemsFilePath);
-
+	
 	std::vector<std::pair<double, double> >& getItems();
 	double getKnapsackSize() const;
 private:
 	void validatePassedParameters(const double knapsackSize, const std::vector<std::pair<double, double> >& items);
+	void loadProblemFromFile(const std::string& itemsFilePath);
 
 	unsigned int numberOfItems;
 	double knapsackSize;

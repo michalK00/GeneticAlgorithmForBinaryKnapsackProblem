@@ -30,7 +30,6 @@ private:
 	void validatePopulation(Population& population, KnapsackProblem& problem);
 
 	static const int NUMBER_OF_ITERATIONS = 10000;
-	//nie wiem czemu nie ale double nie moze zostac zainicjalizowany w obrebie klasy bez constexpr
 	static constexpr double MUTATION_BOOSTER = 0.1;
 	double mutationProbability;
 	double crossProbability;
