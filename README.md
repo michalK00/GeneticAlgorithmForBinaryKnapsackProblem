@@ -1,7 +1,7 @@
 # Binary Knapsack Problem Genetic Algorithm
 
 Project created as part of the Effective Progamming Techniques course. This is a genetic algorithm that solves the binary knapsack problem.
-Data is pulled from file, or directry from the program itself. 
+The data is taken from a file, or directly from the program itself.
 
 Template for the input file:
 ```txt
