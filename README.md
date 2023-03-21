@@ -1,4 +1,4 @@
-# Binary Knapsack Problem Genetic Algorithm
+# Genetic Algorithm For Binary Knapsack Problem 
 
 Project created as part of the Effective Progamming Techniques course. This is a genetic algorithm that solves the binary knapsack problem.
 The data is taken from a file, or directly from the program itself.
